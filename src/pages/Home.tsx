@@ -44,7 +44,8 @@ const Home: React.FC = () => {
             className="text-center"
           >
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Département d'Informatique
+             Laboratoire d'Informatique et d'Ingénierie pour l'Innovation LI3
+
               <span className="block text-primary-300">LI3 - UASZ</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-primary-100 max-w-3xl mx-auto">
@@ -96,7 +97,8 @@ const Home: React.FC = () => {
                 À propos du département
               </h2>
               <p className="text-secondary-700 mb-6 leading-relaxed">
-                Le département d'Informatique LI3 de l'Université Assane Seck de Ziguinchor
+                Laboratoire d'Informatique et d'Ingénierie pour l'Innovation LI3
+                de l'Université Assane Seck de Ziguinchor est dédié à l'excellence académique et à la formation de professionnels
                 est dédié à l'excellence académique et à la formation de professionnels
                 compétents dans le domaine des technologies de l'information.
               </p>
