@@ -16,19 +16,19 @@ const Home: React.FC = () => {
       title: 'Nouveau programme Master en Intelligence Artificielle',
       date: '15 Octobre 2024',
       excerpt: 'Découvrez notre nouveau programme de Master spécialisé en IA...',
-      image: '/api/placeholder/400/250'
+      image: '/photos/actualite.jpg'
     },
     {
       title: 'Journée Portes Ouvertes - 25 Novembre',
       date: '10 Octobre 2024',
       excerpt: 'Venez découvrir nos formations et rencontrer nos équipes...',
-      image: '/api/placeholder/400/250'
+      image: '/photos/actualite.jpg'
     },
     {
       title: 'Projet de recherche en cybersécurité',
       date: '5 Octobre 2024',
       excerpt: 'Nos étudiants participent à un projet innovant...',
-      image: '/api/placeholder/400/250'
+      image: '/photos/actualite.jpg'
     },
   ];
 
