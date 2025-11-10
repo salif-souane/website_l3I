@@ -28,7 +28,8 @@ const Navbar: React.FC = () => {
               <span className="font-bold text-lg">LI3</span>
             </div>
             <div className="hidden md:block">
-              <h1 className="text-lg font-bold text-secondary-900">Département Informatique</h1>
+              <h1 className="text-lg font-bold text-secondary-900">Laboratoire LI3
+</h1>
               <p className="text-xs text-secondary-600">Université Assane Seck</p>
             </div>
           </Link>
