@@ -94,7 +94,7 @@ const Home: React.FC = () => {
               transition={{ duration: 0.8 }}
             >
               <h2 className="text-3xl font-bold text-secondary-900 mb-6">
-                À propos du département
+                À propos de LI3
               </h2>
               <p className="text-secondary-700 mb-6 leading-relaxed">
                 Laboratoire d'Informatique et d'Ingénierie pour l'Innovation LI3
