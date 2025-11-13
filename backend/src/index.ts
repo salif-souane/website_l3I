@@ -1,3 +1,4 @@
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -20,7 +21,12 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 import authRoutes from './routes/auth';
+import newsRoutes from './routes/news';
+import eventRoutes from './routes/events';
+import publicationRoutes from './routes/publications';
 app.use('/api/auth', authRoutes);
+app.use('/api/news', newsRoutes);
+app.use('/api/events', eventRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

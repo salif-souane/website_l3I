@@ -1,6 +1,6 @@
 # Backend API - Laboratoire LI3
 
-Backend API pour le site web du Laboratoire LI3, développé avec Node.js, Express, TypeScript et Prisma.
+Backend API REST pour le site web du Laboratoire LI3, développé avec Node.js, Express, TypeScript et Prisma.
 
 ## Technologies utilisées
 
@@ -8,10 +8,9 @@ Backend API pour le site web du Laboratoire LI3, développé avec Node.js, Expre
 - **Express.js** - Framework web
 - **TypeScript** - Typage statique
 - **Prisma** - ORM pour PostgreSQL
-- **JWT** - Authentification
+- **JWT** - Authentification stateless
 - **bcryptjs** - Hashage des mots de passe
-- **CORS** - Gestion des requêtes cross-origin
-- **Helmet** - Sécurité des headers HTTP
+- **multer** - Gestion des uploads de fichiers
 
 ## Installation
 
@@ -21,23 +20,31 @@ npm install
 ```
 
 2. Configurer les variables d'environnement :
-Copier le fichier `.env` et ajuster les valeurs selon votre environnement.
+Créer un fichier `.env` à la racine du projet :
+```env
+DATABASE_URL="postgresql://username:password@localhost:5432/li3_lab_db"
+JWT_SECRET="your-super-secret-jwt-key"
+JWT_EXPIRES_IN="7d"
+PORT=5000
+NODE_ENV="development"
+FRONTEND_URL="http://localhost:5173"
+```
 
 3. Générer le client Prisma :
 ```bash
-npm run prisma:generate
+npx prisma generate
 ```
 
 4. Appliquer les migrations de base de données :
 ```bash
-npm run prisma:migrate
+npx prisma migrate dev
 ```
 
 ## Scripts disponibles
 
 - `npm run build` - Compiler TypeScript vers JavaScript
 - `npm run start` - Démarrer le serveur en production
-- `npm run dev` - Démarrer le serveur en mode développement avec hot-reload
+- `npm run dev` - Démarrer le serveur en mode développement avec hot reload
 - `npm run prisma:generate` - Générer le client Prisma
 - `npm run prisma:migrate` - Appliquer les migrations de base de données
 - `npm run prisma:studio` - Ouvrir Prisma Studio pour visualiser la base de données
@@ -45,17 +52,38 @@ npm run prisma:migrate
 ## Structure du projet
 
 ```
-src/
-├── controllers/     # Logique des contrôleurs
-├── middleware/      # Middlewares Express
-├── routes/         # Définition des routes API
-├── services/       # Services métier
-├── types/          # Types TypeScript
-├── utils/          # Utilitaires
-└── index.ts        # Point d'entrée de l'application
-
-prisma/
-└── schema.prisma   # Schéma de base de données
+backend/
+├── src/
+│   ├── controllers/     # Logique des contrôleurs
+│   │   ├── authController.ts
+│   │   ├── newsController.ts
+│   │   ├── eventController.ts
+│   │   └── publicationController.ts
+│   ├── middleware/      # Middlewares Express
+│   │   ├── auth.ts      # Authentification JWT
+│   │   └── validation.ts # Validation des données
+│   ├── routes/          # Définition des routes
+│   │   ├── auth.ts
+│   │   ├── news.ts
+│   │   ├── events.ts
+│   │   └── publications.ts
+│   ├── services/        # Logique métier
+│   │   ├── authService.ts
+│   │   ├── newsService.ts
+│   │   ├── eventService.ts
+│   │   └── publicationService.ts
+│   ├── types/           # Types TypeScript
+│   │   └── index.ts
+│   ├── utils/           # Utilitaires
+│   │   ├── jwt.ts
+│   │   └── hash.ts
+│   └── index.ts         # Point d'entrée de l'application
+├── prisma/
+│   └── schema.prisma    # Schéma de base de données
+├── .env                 # Variables d'environnement
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
 ## API Endpoints
@@ -65,49 +93,88 @@ prisma/
 - `POST /api/auth/login` - Connexion
 - `GET /api/auth/me` - Informations utilisateur actuel
 
-### Santé du système
+### Actualités
+- `GET /api/news` - Liste des actualités
+- `GET /api/news/:id` - Détails d'une actualité
+- `POST /api/news` - Créer une actualité (admin/teacher)
+- `PUT /api/news/:id` - Modifier une actualité (admin/teacher)
+- `DELETE /api/news/:id` - Supprimer une actualité (admin)
+- `PATCH /api/news/:id/publish` - Publier une actualité (admin/teacher)
+
+### Événements
+- `GET /api/events` - Liste des événements
+- `GET /api/events/upcoming` - Événements à venir
+- `GET /api/events/:id` - Détails d'un événement
+- `POST /api/events` - Créer un événement (admin/teacher)
+- `PUT /api/events/:id` - Modifier un événement (admin/teacher)
+- `DELETE /api/events/:id` - Supprimer un événement (admin)
+
+### Publications
+- `GET /api/publications` - Liste des publications
+- `GET /api/publications/search?q=query` - Recherche de publications
+- `GET /api/publications/:id` - Détails d'une publication
+- `POST /api/publications` - Créer une publication (admin/teacher)
+- `PUT /api/publications/:id` - Modifier une publication (admin/teacher)
+- `DELETE /api/publications/:id` - Supprimer une publication (admin)
+
+### Santé
 - `GET /api/health` - Vérification de l'état du serveur
 
-## Démarrage
+## Rôles et permissions
 
-Pour démarrer le serveur en mode développement :
+- **user** : Utilisateur standard (lecture seule)
+- **teacher** : Enseignant (peut créer/modifier actualités, événements, publications)
+- **admin** : Administrateur (tous les droits)
+
+## Démarrage du serveur
+
+En mode développement :
 ```bash
 npm run dev
 ```
 
-Le serveur sera accessible sur `http://localhost:5000`
+En production :
+```bash
+npm run build
+npm start
+```
+
+Le serveur démarrera sur le port défini dans les variables d'environnement (par défaut 5000).
 
 ## Base de données
 
-Le projet utilise PostgreSQL comme base de données. Assurez-vous que :
-1. PostgreSQL est installé et en cours d'exécution
-2. La variable `DATABASE_URL` dans `.env` pointe vers votre base de données
-3. Les migrations Prisma ont été appliquées
+Le projet utilise PostgreSQL avec Prisma comme ORM. Le schéma de base de données définit les tables suivantes :
+
+- `users` - Utilisateurs du système
+- `news` - Actualités du laboratoire
+- `events` - Événements du laboratoire
+- `publications` - Publications scientifiques
 
 ## Sécurité
 
-- Authentification JWT avec tokens d'accès
-- Hashage des mots de passe avec bcrypt
-- Validation des entrées utilisateur
-- Protection contre les attaques XSS et CSRF
-- Headers de sécurité avec Helmet
-- Gestion CORS configurée
+- Authentification JWT avec tokens d'accès et de rafraîchissement
+- Hashage des mots de passe avec bcryptjs
+- Validation des données d'entrée
+- Protection contre les attaques CSRF et XSS
+- Rate limiting (à implémenter)
+- CORS configuré pour le frontend
 
 ## Développement
 
 Pour contribuer au développement :
+
 1. Créer une branche pour votre fonctionnalité
-2. Écrire des tests si nécessaire
-3. S'assurer que le code compile sans erreurs TypeScript
-4. Tester manuellement les nouvelles fonctionnalités
-5. Créer une pull request
+2. Écrire des tests pour les nouvelles fonctionnalités
+3. Respecter les conventions de code TypeScript
+4. Documenter les nouvelles API endpoints
+5. Tester manuellement les changements
 
 ## Déploiement
 
-Le backend peut être déployé sur des plateformes comme :
+Le backend peut être déployé sur :
 - Heroku
 - Railway
 - DigitalOcean App Platform
-- AWS EC2
+- AWS EC2 avec PM2
 
 Assurez-vous de configurer correctement les variables d'environnement en production.
