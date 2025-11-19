@@ -3,68 +3,79 @@ import { Publication } from '../types';
 
 const prisma = new PrismaClient();
 
-export class PublicationService {
-  static async getAllPublications(): Promise<Publication[]> {
-    return await prisma.publication.findMany({
-      orderBy: { publicationDate: 'desc' }
-    });
-  }
+// Récupérer toutes les publications
+export const getAllPublications = async (): Promise<Publication[]> => {
+  return await prisma.publication.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+};
 
-  static async getPublicationById(id: number): Promise<Publication | null> {
-    return await prisma.publication.findUnique({
-      where: { id }
-    });
-  }
+// Récupérer une publication par ID
+export const getPublicationById = async (id: number): Promise<Publication | null> => {
+  return await prisma.publication.findUnique({
+    where: { id },
+  });
+};
 
-  static async createPublication(data: {
-    title: string;
-    authors: string[];
-    publicationType?: string;
-    publicationDate?: Date;
-    doi?: string;
-    fileUrl?: string;
-  }): Promise<Publication> {
-    return await prisma.publication.create({
-      data
-    });
-  }
+// Créer une nouvelle publication
+export const createPublication = async (
+  data: Omit<Publication, 'id' | 'createdAt'>
+): Promise<Publication> => {
+  return await prisma.publication.create({
+    data: {
+      title: data.title!,
+      authors: data.authors || [],
+      publicationType: data.publicationType || null,
+      publicationDate: data.publicationDate || null,
+      doi: data.doi || null,
+      fileUrl: data.fileUrl || null,
+    },
+  });
+};
 
-  static async updatePublication(id: number, data: Partial<{
-    title: string;
-    authors: string[];
-    publicationType: string;
-    publicationDate: Date;
-    doi: string;
-    fileUrl: string;
-  }>): Promise<Publication | null> {
-    return await prisma.publication.update({
-      where: { id },
-      data
-    });
-  }
+// Supprime les champs undefined pour Prisma
+const cleanObject = (obj: any) =>
+  Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== undefined));
 
-  static async deletePublication(id: number): Promise<boolean> {
-    try {
-      await prisma.publication.delete({
-        where: { id }
-      });
-      return true;
-    } catch {
-      return false;
-    }
-  }
+// Mettre à jour une publication
+export const updatePublication = async (
+  id: number,
+  body: Partial<Omit<Publication, 'id' | 'createdAt'>>
+): Promise<Publication> => {
+  const data = cleanObject({
+    title: body.title,
+    authors: body.authors,
+    publicationType: body.publicationType,
+    publicationDate: body.publicationDate,
+    doi: body.doi,
+    fileUrl: body.fileUrl,
+  });
 
-  static async searchPublications(query: string): Promise<Publication[]> {
-    return await prisma.publication.findMany({
-      where: {
-        OR: [
-          { title: { contains: query, mode: 'insensitive' } },
-          { authors: { hasSome: [query] } },
-          { publicationType: { contains: query, mode: 'insensitive' } },
-          { doi: { contains: query, mode: 'insensitive' } }
-        ]
-      },
-      orderBy: { publicationDate: 'desc' }
-    });
-  }
-}
+  return await prisma.publication.update({
+    where: { id },
+    data,
+  });
+};
+
+// Supprimer une publication (ou simplement récupérer avant suppression)
+export const deletePublication = async (id: number): Promise<Publication | null> => {
+  // Pour réellement supprimer : prisma.publication.delete({ where: { id } })
+  return await prisma.publication.findUnique({
+    where: { id },
+  });
+};
+
+// Rechercher des publications par titre ou auteurs
+export const searchPublications = async (query: string): Promise<Publication[]> => {
+  return await prisma.publication.findMany({
+    where: {
+      OR: [
+        { title: { contains: query, mode: 'insensitive' } },
+        { authors: { hasSome: [query] } },
+      ],
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+};

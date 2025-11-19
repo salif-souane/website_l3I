@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NewsService } from '../services/newsService';
+import * as NewsService from '../services/newsService';
 
 export class NewsController {
   static async getAllNews(req: Request, res: Response) {
@@ -12,7 +12,7 @@ export class NewsController {
     } catch (error: any) {
       res.status(500).json({
         success: false,
-        error: error.message
+        error: error.messagecl
       });
     }
   }
@@ -176,7 +176,7 @@ export class NewsController {
         });
       }
 
-      const news = await NewsService.publishNews(id);
+      const news = await NewsService.updateNews(id, { status: 'published', publishedAt: new Date() });
       if (!news) {
         return res.status(404).json({
           success: false,

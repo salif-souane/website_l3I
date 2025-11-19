@@ -178,3 +178,49 @@ Le backend peut être déployé sur :
 - AWS EC2 avec PM2
 
 Assurez-vous de configurer correctement les variables d'environnement en production.
+
+
+Étapes pour démarrer le backend
+Installer les dépendances (si pas déjà fait) :
+
+
+cd backend
+npm install
+Configurer les variables d'environnement :
+Créez un fichier .env dans le dossier backend/ avec :
+
+
+DATABASE_URL="postgresql://username:password@localhost:5432/li3_lab_db"
+JWT_SECRET="your-super-secret-jwt-key"
+JWT_EXPIRES_IN="7d"
+Configurer la base de données :
+
+
+cd backend
+npx prisma migrate dev
+npx prisma db seed
+Démarrer le serveur backend :
+
+
+cd backend
+npm run dev
+Le serveur devrait démarrer sur http://localhost:5000.
+
+Tester les API endpoints :
+
+Ouvrez un navigateur ou utilisez curl pour tester :
+GET http://localhost:5000/api/health (pour vérifier la santé du serveur)
+GET http://localhost:5000/api/news (pour récupérer les actualités)
+GET http://localhost:5000/api/events (pour récupérer les événements)
+GET http://localhost:5000/api/publications (pour récupérer les publications)
+Démarrer le frontend (dans un autre terminal) :
+
+
+npm run dev
+Le frontend devrait être accessible sur http://localhost:5173.
+
+Vérifier l'intégration :
+
+Ouvrez http://localhost:5173 dans un navigateur.
+Naviguez sur les pages pour voir si les données se chargent depuis le backend.
+Vérifiez la console du navigateur pour les erreurs.

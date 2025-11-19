@@ -1,72 +1,90 @@
 import { PrismaClient } from '@prisma/client';
-import { Event } from '../types';
+import { Event } from '../types/index';
 
 const prisma = new PrismaClient();
 
-export class EventService {
-  static async getAllEvents(): Promise<Event[]> {
-    return await prisma.event.findMany({
-      include: { organizer: true },
-      orderBy: { startDate: 'asc' }
-    });
-  }
+export const getAllEvents = async (): Promise<Event[]> => {
+  return await prisma.event.findMany({
+    include: {
+      organizer: true,
+    },
+  });
+};
 
-  static async getEventById(id: number): Promise<Event | null> {
-    return await prisma.event.findUnique({
-      where: { id },
-      include: { organizer: true }
-    });
-  }
+export const getEventById = async (id: number): Promise<Event | null> => {
+  return await prisma.event.findUnique({
+    where: { id },
+    include: {
+      organizer: true,
+    },
+  });
+};
 
-  static async createEvent(data: {
-    title: string;
-    description?: string;
-    startDate: Date;
-    endDate?: Date;
-    location?: string;
-    organizerId: number;
-  }): Promise<Event> {
-    return await prisma.event.create({
-      data,
-      include: { organizer: true }
-    });
-  }
+export const createEvent = async (data: {
+  title: string;
+  description?: string;
+  startDate: Date;
+  endDate?: Date;
+  location?: string;
+  organizerId: number;
+}): Promise<Event> => {
+  const { title, description, startDate, endDate, location, organizerId } = data;
+  return await prisma.event.create({
+    data: {
+      title,
+      description: description || null,
+      startDate,
+      endDate: endDate || null,
+      location: location || null,
+      organizerId,
+    },
+    include: {
+      organizer: true,
+    },
+  });
+};
 
-  static async updateEvent(id: number, data: Partial<{
+export const updateEvent = async (
+  id: number,
+  data: Partial<{
     title: string;
     description: string;
     startDate: Date;
     endDate: Date;
     location: string;
-  }>): Promise<Event | null> {
-    return await prisma.event.update({
-      where: { id },
-      data,
-      include: { organizer: true }
-    });
-  }
+  }>
+): Promise<Event | null> => {
+  return await prisma.event.update({
+    where: { id },
+    data,
+    include: {
+      organizer: true,
+    },
+  });
+};
 
-  static async deleteEvent(id: number): Promise<boolean> {
-    try {
-      await prisma.event.delete({
-        where: { id }
-      });
-      return true;
-    } catch {
-      return false;
-    }
-  }
+export const deleteEvent = async (id: number): Promise<Event | null> => {
+  return await prisma.event.delete({
+    where: { id },
+    include: {
+      organizer: true,
+    },
+  });
+};
 
-  static async getUpcomingEvents(limit: number = 10): Promise<Event[]> {
-    return await prisma.event.findMany({
-      where: {
-        startDate: {
-          gte: new Date()
-        }
+export const getUpcomingEvents = async (limit: number = 10): Promise<Event[]> => {
+  return await prisma.event.findMany({
+    where: {
+      startDate: {
+        gte: new Date(),
       },
-      include: { organizer: true },
-      orderBy: { startDate: 'asc' },
-      take: limit
-    });
-  }
-}
+    },
+    orderBy: {
+      startDate: 'asc',
+    },
+    take: limit,
+    include: {
+      organizer: true,
+    },
+  });
+};

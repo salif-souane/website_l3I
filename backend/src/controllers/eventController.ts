@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { EventService } from '../services/eventService';
+import * as EventService from '../services/eventService';
 
 export class EventController {
   static async getAllEvents(req: Request, res: Response) {

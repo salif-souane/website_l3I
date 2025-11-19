@@ -21,8 +21,8 @@ export class AuthService {
       data: {
         email: data.email,
         passwordHash: hashedPassword,
-        firstName: data.firstName,
-        lastName: data.lastName,
+        firstName: data.firstName ?? null,
+        lastName: data.lastName ?? null,
         role: 'user',
         status: 'active'
       }

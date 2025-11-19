@@ -3,8 +3,8 @@ export interface User {
   email: string;
   passwordHash: string;
   role: string;
-  firstName?: string;
-  lastName?: string;
+  firstName: string | null;
+  lastName: string | null;
   status: string;
   createdAt: Date;
   updatedAt: Date;
@@ -13,37 +13,37 @@ export interface User {
 export interface News {
   id: number;
   title: string;
-  content?: string;
-  excerpt?: string;
-  imageUrl?: string;
-  authorId?: number;
-  publishedAt?: Date;
+  content: string | null;
+  excerpt: string | null;
+  imageUrl: string | null;
+  authorId: number | null;
+  publishedAt: Date | null;
   status: string;
   createdAt: Date;
   updatedAt: Date;
-  author?: User;
+  author?: User | null;
 }
 
 export interface Event {
   id: number;
   title: string;
-  description?: string;
+  description: string | null;
   startDate: Date;
-  endDate?: Date;
-  location?: string;
-  organizerId?: number;
+  endDate: Date | null;
+  location: string | null;
+  organizerId: number | null;
   createdAt: Date;
-  organizer?: User;
+  organizer?: User | null;
 }
 
 export interface Publication {
   id: number;
   title: string;
   authors: string[];
-  publicationType?: string;
-  publicationDate?: Date;
-  doi?: string;
-  fileUrl?: string;
+  publicationType: string | null;
+  publicationDate: Date | null;
+  doi: string | null;
+  fileUrl: string | null;
   createdAt: Date;
 }
 
