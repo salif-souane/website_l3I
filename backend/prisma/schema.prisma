@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  passwordHash String
+  role        String   @default("user")
+  firstName   String?
+  lastName    String?
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  news        News[]
+  events      Event[]
+
+  @@map("users")
+}
+
+model News {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String?
+  excerpt     String?
+  imageUrl    String?
+  authorId    Int?
+  publishedAt DateTime?
+  status      String   @default("draft")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  author      User?    @relation(fields: [authorId], references: [id])
+
+  @@map("news")
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  organizerId Int?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  organizer   User?    @relation(fields: [organizerId], references: [id])
+
+  @@map("events")
+}
+
+model Publication {
+  id               Int      @id @default(autoincrement())
+  title            String
+  authors          String[]
+  publicationType  String?
+  publicationDate  DateTime?
+  doi              String?  @unique
+  fileUrl          String?
+  createdAt        DateTime @default(now())
+  publishedAt DateTime   @default(now())
+
+  @@map("publications")
+}

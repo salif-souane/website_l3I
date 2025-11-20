@@ -17,13 +17,13 @@ const Actualites: React.FC = () => {
   const news = [
     {
       id: 1,
-      title: 'Nouveau programme Master en Intelligence Artificielle',
+      title: 'Nouveau programme Master en Intelligence Artificielle X',
       excerpt: 'Découvrez notre nouveau programme de Master spécialisé en IA, en partenariat avec des entreprises leaders du secteur.',
       content: 'Le département d\'informatique lance un nouveau Master en Intelligence Artificielle pour répondre aux besoins croissants du marché du travail...',
       date: '2024-10-15',
       author: 'Dr. Amadou Diallo',
       category: 'formation',
-      image: '/api/placeholder/600/300',
+      image: '/photos/actualite.jpg',
       tags: ['Master', 'IA', 'Innovation']
     },
     {
@@ -34,7 +34,7 @@ const Actualites: React.FC = () => {
       date: '2024-10-10',
       author: 'Service Communication',
       category: 'evenement',
-      image: '/api/placeholder/600/300',
+      image: '/photos/actualite.jpg',
       tags: ['Portes ouvertes', 'Visite', 'Inscription']
     },
     {
@@ -45,7 +45,7 @@ const Actualites: React.FC = () => {
       date: '2024-10-05',
       author: 'M. Moussa Ndiaye',
       category: 'recherche',
-      image: '/api/placeholder/600/300',
+      image: '/photos/actualite.jpg',
       tags: ['Cybersécurité', 'Concours', 'Prix']
     },
     {
@@ -56,7 +56,7 @@ const Actualites: React.FC = () => {
       date: '2024-09-28',
       author: 'Bureau des Étudiants',
       category: 'etudiant',
-      image: '/api/placeholder/600/300',
+      image: '/photos/actualite.jpg',
       tags: ['Club', 'Activités', 'Communauté']
     },
     {
@@ -67,7 +67,7 @@ const Actualites: React.FC = () => {
       date: '2024-09-20',
       author: 'Dr. Fatou Sow',
       category: 'formation',
-      image: '/api/placeholder/600/300',
+      image: '/photos/actualite.jpg',
       tags: ['Partenariat', 'Entreprise', 'Stage']
     },
     {
@@ -78,7 +78,7 @@ const Actualites: React.FC = () => {
       date: '2024-09-15',
       author: 'Comité Scientifique',
       category: 'evenement',
-      image: '/api/placeholder/600/300',
+      image: '/photos/actualite.jpg',
       tags: ['Conférence', 'Big Data', 'International']
     }
   ];

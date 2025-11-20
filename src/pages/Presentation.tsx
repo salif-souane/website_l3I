@@ -8,25 +8,25 @@ const Presentation: React.FC = () => {
       name: 'Dr. Amadou Diallo',
       role: 'Chef de Département',
       specialite: 'Intelligence Artificielle',
-      image: '/api/placeholder/150/150'
+      image: '/photos/profil1.jpg'
     },
     {
       name: 'Prof. Fatou Sow',
       role: 'Enseignante-chercheuse',
       specialite: 'Bases de données',
-      image: '/api/placeholder/150/150'
+      image: '/photos/profil1.jpg'
     },
     {
       name: 'Dr. Moussa Ndiaye',
       role: 'Enseignant-chercheur',
       specialite: 'Cybersécurité',
-      image: '/api/placeholder/150/150'
+      image: '/photos/profil1.jpg'
     },
     {
       name: 'Mme. Aïssatou Ba',
       role: 'Enseignante',
       specialite: 'Développement web',
-      image: '/api/placeholder/150/150'
+      image: '/photos/profil1.jpg'
     },
   ];
 
